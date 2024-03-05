@@ -5,11 +5,10 @@ server:
     session:
       timeout: 7200
 
-
-#tomcat:
-#  ajp:
-#    protocol: AJP/1.3
-#    port: 9002
+tomcat:
+  ajp:
+    protocol: AJP/1.3
+    port: 9002
 
 devtools: #jsp파일 서버 재시작 없이 바로 적용하기
   spring-boot-devtools livereload:
@@ -20,19 +19,16 @@ devtools: #jsp파일 서버 재시작 없이 바로 적용하기
       cache: false
     restart:
       enabled: true
-
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-
   livereload:
     enabled: true
   thymeleaf:
     cache: false
   restart:
     enabled: true
-
 
 spring:
   resource:
@@ -45,3 +41,19 @@ spring:
       enabled: true
     cache: false
     check-template-location: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: ENC(3FxC+SF9BKf8pLXjaommiVXU9FZR5mMBjEr5qn4lBo9fol5a9oMShpyP5J4tS75XGJIglg5cUcVG8G3cDgWfLIZqNeupg/US4gNr+5XJ97BdJieqgHb3Z0lCaSsD0nVru+YjNkejR3n7XqDH7BTRZdfH12fF3kP07wJjDNMq3aqbsF6PA5+etiY9ZhC2keU+)
+    username: ENC(FHwM643hJ8dRVPbx6/zkdK+DzTOizOGesKeMgLvFyfP25nKXoHdShmxuCzjge3xH)
+    password: ENC(iWTND4viKjOtfW0x6DWyYv6n/dRqH0a8s/2GBBPVwhnQzLJPX4AAeLF2eqpCJlj4)
+    mapper-locations: classpath:/mapper/**/*.xml
+
+#암호화 bean
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  config-location: classpath:/mybatis/mybatis-config.xml
