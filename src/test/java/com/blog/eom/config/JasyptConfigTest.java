@@ -6,24 +6,43 @@ import org.junit.jupiter.api.Test;
 
 public class JasyptConfigTest {
 
+    private final String ALGORITHM_KEY = "PBEWITHHMACSHA512ANDAES_256";
+
     @Test
     void stringEncryptor() {
-        String url = "jdbc:mariadb://lanterlt.cafe24.com:3306/lanterlt?serverTimezone=Asia/Seoul&characterEncoding=UTF-8";
-        String username = "lanterlt";
-        String password = "dkagh3421@@";
+        //운영은 메일에 남겨놨음.
+        String url = "jdbc:mariadb://127.0.0.1:3306/serviceName?serverTimezone=Asia/Seoul&characterEncoding=UTF-8";
+        String username = "db_user_name";
+        String password = "db_password";
 
-        System.out.println(jasyptEncoding(url));
-        System.out.println(jasyptEncoding(username));
-        System.out.println(jasyptEncoding(password));
+        String endURL = jasyptEncoding(url);
+        String endUser = jasyptEncoding(username);
+        String endPassword = jasyptEncoding(password);
+
+        System.out.println(String.format("암호화 URL : %s", endURL) );
+        System.out.println(String.format("유저 : %s", endUser) );
+        System.out.println(String.format("비번 : %s", endPassword) );
+        System.out.println(String.format("복호화 URL : %s", jasyptDecryt(endURL)) );
+        System.out.println(String.format("유저 : %s", jasyptDecryt(endUser)) );
+        System.out.println(String.format("비번 : %s", jasyptDecryt(endPassword)) );
     }
 
     public String jasyptEncoding(String value) {
 
-        String key = "studydb";
+        String key = "jasypt-key";   // 메일에 남겨놨음
         StandardPBEStringEncryptor pbeEnc = new StandardPBEStringEncryptor();
-        pbeEnc.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
+        pbeEnc.setAlgorithm(ALGORITHM_KEY);
         pbeEnc.setPassword(key);
         pbeEnc.setIvGenerator(new RandomIvGenerator());
         return pbeEnc.encrypt(value);
+    }
+
+    private String jasyptDecryt(String input){
+        String key = "jasypt-key";   // 메일에 남겨놨음
+        StandardPBEStringEncryptor pbeDec = new StandardPBEStringEncryptor();
+        pbeDec.setAlgorithm(ALGORITHM_KEY);
+        pbeDec.setPassword(key);
+        pbeDec.setIvGenerator(new RandomIvGenerator());
+        return pbeDec.decrypt(input);
     }
 }
